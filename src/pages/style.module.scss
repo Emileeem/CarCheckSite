@@ -1,0 +1,156 @@
+.principal {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+}
+
+//lado esquerdo 
+.esquerdo {
+    width: 40%;
+    height: 100vh;
+    background-color:#003B6A;
+    position: relative;
+}
+
+.logo {
+    margin-top: 70%;
+    margin-left: 10%;
+    width: 55%;
+}
+
+.bordao {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    position: relative;
+    font-size: 30px;
+    color: white;
+    margin-left: 30%;
+    margin-top: -10%;
+}
+
+.hexa {
+    position: relative;
+    width: 150%;
+    animation: rotate 20s linear infinite;
+    top: -50%;
+    left: -40%;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+//Lado Direito
+.login {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    display: flex;
+    height: 550px;
+    margin-left: 55%;
+    margin-top: 30%;
+    width: 30vw;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    font-family: "Inter", sans-serif;
+    font-weight: 300;
+}
+
+.edv {
+    margin-top: 30%;
+    height: 30px;
+    margin-bottom: 15%;
+    width: 70%;
+    border: 0;
+}
+
+.senha {
+    height: 30px;
+    width: 70%;
+    border: 0;
+}
+
+.entrar {
+    background-color: #003B6A;
+    color: white;
+    width: 70%;
+    height: 40px;
+    border: 0;
+}
+
+//Inputs 
+
+
+$primary: #B7B7B7;
+$secondary: #B7B7B7;
+$white: #000000;
+$gray: #B7B7B7;
+
+
+.form__group {
+  position: relative;
+  padding: 15px 0 0;
+  margin-top: 10px;
+  width: 70%;
+  margin-bottom: 10%;
+}
+
+.form__field {
+    font-family: "Inter", sans-serif;
+    width: 100%;
+    border: 0;
+    border-bottom: 2px solid $gray;
+    outline: 0;
+    font-size: 15px;
+    color: $white;
+    padding: 7px 0;
+    background: transparent;
+    transition: border-color 0.2s;
+
+    &::placeholder {
+        color: transparent;
+    }
+
+    &:placeholder-shown ~ .form__label {
+        font-size: 15px;
+        cursor: text;
+        top: -10px;
+    }
+}
+
+.form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: $gray;
+}
+
+.form__field:focus {
+    ~ .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: $primary;
+        font-weight:700;    
+    }
+    padding-bottom: 6px;  
+    font-weight: 700;
+    border-width: 3px;
+    border-image: linear-gradient(to right, $primary,$secondary);
+    border-image-slice: 1;
+}
+
+/* reset input */
+.form__field{
+    &:required,&:invalid { box-shadow:none; }
+}
