@@ -1,6 +1,6 @@
 import styles from "./style.module.scss";
-import logo from "../../public/logo.png"
-import hexa from "../../public/hexagono.png"
+import logo from "../../../public/logo.png"
+import hexa from "../../../public/hexagono.png"
 
 export default function LoginPage() {
     return (

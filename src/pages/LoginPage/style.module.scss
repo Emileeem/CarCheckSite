@@ -154,3 +154,33 @@ $gray: #B7B7B7;
 .form__field{
     &:required,&:invalid { box-shadow:none; }
 }
+@media (max-width: 1400px) {
+    .login {
+        width: 55vh;
+        margin-left: 10%;
+    }
+    .hexa {
+        top: -28%;
+    }
+    .bordao {
+        font-size: 25px;
+        margin-left: 20%;
+    }
+    .logo {
+        margin-top: 90%;
+    }
+}
+
+@media (max-width: 900px) {
+    .login {
+        width: 50vh;
+        margin-left: 4%;
+    }
+    .hexa {
+        top: -25%;
+    }
+    .bordao {
+        font-size: 15px;
+        margin-left: 20%;
+    }
+}

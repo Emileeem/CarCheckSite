@@ -1,0 +1,162 @@
+.principal {
+    background-color: #003B6A;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+nav {
+    background-color: white;
+    color: #003B6A;
+    font-family: "Inter", sans-serif;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100vw;
+    
+}
+.nav {
+    display: flex;
+    gap: 20px; /* Ajuste o espaçamento conforme necessário */
+    padding: 10px;
+}
+
+.nav h3 {
+    position: relative;
+    padding: 5px 0;
+    cursor: pointer;
+    color: #000;
+    transition: color 0.3s ease;
+    overflow: hidden;
+}
+
+.nav h3::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 3px; 
+    background: linear-gradient(90deg, #ff3131, #004aad, #7ed957, #38b6ff, #404664,  #ff3131, #1b548d, #7ed957);
+    background-size: 200% 100%;
+    background-position: -100% 0; /* Linha oculta inicialmente */
+    transition: background-position 0.5s ease;
+    z-index: 1;
+}
+
+.nav h3:hover::after {
+    background-position: 100% 0; /* Linha visível durante o hover */
+}
+
+
+.dados {
+    display: flex;
+    justify-content: space-around;
+}
+
+h3 {
+    font-weight: 400;
+}
+
+.busca {
+    border-radius: 20px;
+    width: 25%;
+    height: 38px;
+    border: 1px solid #B7B7B7;
+    color: #B7B7B7;
+    padding-left: 2%;
+}
+
+.corpo {
+    width: 60%;
+    background-color: white;
+    height: 70vh;
+    border-radius: 20px;
+}
+
+.botoes {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+button {
+    width: 32%;
+    height: 50px;
+    padding: 1%;
+}
+
+.entrada {
+    background-color: white;
+    border: 1px solid #000;
+    margin: 2%;
+}
+
+.atualizar {
+    background-color: #003B6A;
+    border: 0;
+    color: white;
+    margin: 2%;
+}
+
+.deletar {
+    background-color: #EE1B23;
+    border: 0;
+    color: white;
+    margin: 2%;
+}
+
+.dados {
+    display: flex;
+    align-items: center;
+}
+
+hr {
+    width: 80%;
+    background-color: #B7B7B7;
+}
+
+
+.modalOverlay {
+    font-family: "Inter", sans-serif;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    text-align: center;
+}
+
+.modalContent {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.closeButton, .confirmButton {
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.closeButton {
+    background-color: #f44336;
+    color: white;
+}
+
+.confirmButton {
+    background-color: #4caf50;
+    color: white;
+}   
