@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styles from './style.module.scss';
+import Funcionarios from "../../components/FuncionariosComponent/Funcionarios";
+import Carros from '../../components/CarrosComponent/Carros';
 
 export default function HomePage() {
     const [isVisualizarModalOpen, setIsVisualizarModalOpen] = useState(false);
@@ -85,7 +87,7 @@ export default function HomePage() {
                 <div className={styles.modalOverlay} onClick={closeNovaPlacaModal}>
                     <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
                         <h2>Nova Placa</h2>
-                        <p>Formulário para adicionar uma nova placa...</p>
+                        <Carros/>
                         <button onClick={closeNovaPlacaModal} className={styles.closeButton}>Fechar</button>
                     </div>
                 </div>
@@ -95,11 +97,12 @@ export default function HomePage() {
                 <div className={styles.modalOverlay} onClick={closeNovoLoginModal}>
                     <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
                         <h2>Novo Login</h2>
-                        <p>Formulário para criar um novo login...</p>
+                        <Funcionarios />    
                         <button onClick={closeNovoLoginModal} className={styles.closeButton}>Fechar</button>
                     </div>
                 </div>
             )}
+            
         </div>
     );
 }

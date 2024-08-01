@@ -4,6 +4,8 @@ import logo from "../../../public/logo.png"
 import hexa from "../../../public/hexagono.png"
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Importa o CSS dos toasts
 
 export default function LoginPage() {
     const [edv, setEdv] = useState("");
@@ -21,10 +23,11 @@ export default function LoginPage() {
                 navigate('/home');
             } else {
                 console.error("Erro ao fazer login:", response.data.message);
+                toast.error("Erro ao fazer login: " + response.data.message); // Usando o toast para mensagens de erro
             }
         } catch (error) {
             console.error("Erro ao fazer login:", error);
-            alert("Os dados não conferem!")
+            toast.error("Credenciais erradas!"); // Usando o toast para mensagens de erro
         }
     };
 
@@ -47,10 +50,10 @@ export default function LoginPage() {
                                 placeholder="EDV" 
                                 required 
                                 value={edv}
-                                onChange={(e) => setEdv(e.target.value)
-                            }/>
+                                onChange={(e) => setEdv(e.target.value)}
+                            />
 
-                            <label  className={styles.form__label}>EDV</label>
+                            <label className={styles.form__label}>EDV</label>
                         </div>
 
                         <div className={styles.form__group}>
@@ -62,7 +65,7 @@ export default function LoginPage() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
-                            <label  className={styles.form__label}>Senha</label>
+                            <label className={styles.form__label}>Senha</label>
                         </div>
 
                         <button className={styles.entrar} onClick={handleSubmit}>
@@ -71,6 +74,9 @@ export default function LoginPage() {
                     </div>
                 </div>
             </div>
+
+            {/* Adicione o ToastContainer no final do seu componente */}
+            <ToastContainer />
         </>
     )
 }

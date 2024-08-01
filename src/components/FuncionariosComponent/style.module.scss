@@ -1,0 +1,21 @@
+input {
+    height: 35px;
+    margin: 1%;
+    border-radius: 2px;
+    border: 1px solid lightgray;
+    background-color: lightgray;
+}
+.adm {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;    
+}
+
+.salvar {
+    background-color: #004aad;
+    color: white;
+    border: 0;
+    border-radius: 2px;
+    margin: 1%;
+}
