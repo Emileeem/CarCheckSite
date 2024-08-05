@@ -19,7 +19,7 @@ export default function LoginPage() {
                 password
             });
             if (response.status === 200) {
-                console.log("Usuário logado com sucesso!");
+                console.log(response.data);
                 navigate('/home');
             } else {
                 console.error("Erro ao fazer login:", response.data.message);
