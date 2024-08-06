@@ -4,6 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from "./style.module.scss";
+import verifyJWT from '../../helpers/VerifyJWT';
 
 export default function Funcionarios() {
     const [funcionarios, setFuncionarios] = useState([]);
@@ -29,11 +30,10 @@ export default function Funcionarios() {
 
     const fetchFuncionarios = async () => {
         try {
-            // Substitua pela URL correta da sua API
             const response = await fetch('http://localhost:3000/api/funcionarios');
             if (response.ok) {
                 const data = await response.json();
-                setFuncionarios(data); // Assume que a API retorna uma lista de funcionários
+                setFuncionarios(data);
             } else {
                 console.error('Erro ao buscar funcionários:', response.statusText);
             }
@@ -77,7 +77,7 @@ export default function Funcionarios() {
                 const result = await response.json();
                 if (result) {
                     toast.success('Funcionário cadastrado com sucesso!');
-                    fetchFuncionarios(); // Atualiza a lista após a inclusão
+                    fetchFuncionarios();
                     handleCloseModal();
                 } else {
                     toast.error('Erro ao cadastrar funcionário');
