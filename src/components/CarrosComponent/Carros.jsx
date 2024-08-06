@@ -12,7 +12,7 @@ export default function Carros() {
         placa: "",
         modelo: "",
         ano: "",
-        edv: "", // Alterado de funcionarioID para edv
+        edv: ""
     });
 
     useEffect(() => {
@@ -25,7 +25,7 @@ export default function Carros() {
             const response = await fetch('http://localhost:3000/api/carro');
             if (response.ok) {
                 const data = await response.json();
-                setCarros(data.data); // Supondo que o array de carros esteja em 'data.data'
+                setCarros(data.data);
             } else {
                 console.error('Erro ao buscar carros:', response.statusText);
             }
@@ -39,7 +39,7 @@ export default function Carros() {
             const response = await fetch('http://localhost:3000/api/funcionario');
             if (response.ok) {
                 const data = await response.json();
-                setFuncionarios(data.data); // Supondo que o array de funcionários esteja em 'data.data'
+                setFuncionarios(data.data);
             } else {
                 console.error('Erro ao buscar funcionários:', response.statusText);
             }
@@ -65,7 +65,6 @@ export default function Carros() {
             const funcionario = funcionarios.find(f => f.edv && f.edv.toLowerCase() === edv.toLowerCase());
             if (funcionario) {
                 setFilteredFuncionarios([]);
-                // No longer need to set funcionarioID since we are using edv directly
             } else {
                 setFilteredFuncionarios(funcionarios.filter(f => 
                     f.edv && f.edv.toLowerCase().includes(edv.toLowerCase()) ||
@@ -87,13 +86,11 @@ export default function Carros() {
 
     const handleSaveCarro = async () => {
         try {
-            // Verifica se o edv está presente no formValues
             if (!formValues.edv) {
                 toast.error('Digite o EDV do funcionário antes de salvar o carro.');
                 return;
             }
 
-            // Verifica se todos os campos obrigatórios estão preenchidos
             const { cor, placa, modelo, ano, edv } = formValues;
             if (!cor || !placa || !modelo || !ano || !edv) {
                 toast.error('Todos os campos são obrigatórios.');

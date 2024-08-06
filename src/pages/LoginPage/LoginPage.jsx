@@ -5,7 +5,7 @@ import hexa from "../../../public/hexagono.png"
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Importa o CSS dos toasts
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function LoginPage() {
     const [edv, setEdv] = useState("");
@@ -23,11 +23,11 @@ export default function LoginPage() {
                 navigate('/home');
             } else {
                 console.error("Erro ao fazer login:", response.data.message);
-                toast.error("Erro ao fazer login: " + response.data.message); // Usando o toast para mensagens de erro
+                toast.error("Erro ao fazer login: " + response.data.message);
             }
         } catch (error) {
             console.error("Erro ao fazer login:", error);
-            toast.error("Credenciais erradas!"); // Usando o toast para mensagens de erro
+            toast.error("Credenciais erradas!");
         }
     };
 
