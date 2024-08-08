@@ -1,9 +1,10 @@
-import dotenv from 'dotenv-safe';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv-safe';
+import process from 'process';
 
 dotenv.config();
 
-function verifyJWT(req, res, next){
+export default function verifyJWT(req, res, next){
     const token = req.headers['authorization'];
     if (!token) return res.status(401).json({ auth: false, message: 'No token provided.' });
     
@@ -14,5 +15,3 @@ function verifyJWT(req, res, next){
       next();
     });
 }
-
-export default verifyJWT
