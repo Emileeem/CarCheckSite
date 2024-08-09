@@ -31,7 +31,7 @@ export default function HomePage() {
                 <h3> Home </h3>
                 <h3 onClick={openNovaPlacaModal}> Nova Placa </h3>
                 <h3 onClick={openNovoLoginModal}> Novo Login </h3>
-                <input type='text' placeholder='Buscar Colaborador...' className={styles.busca}/>
+                <input type='text' placeholder='Buscar Colaborador...' className={styles.busca} onSubmit={console.log("AAAAAAAAAAAAAAAAAAAAAAA")}/>
             </nav>
 
             <section className={styles.corpo}>
