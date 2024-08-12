@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from "./style.module.scss";
-import verifyJWT from '../../helpers/VerifyJWT.jsx'
 
 export default function Funcionarios() {
     const [funcionarios, setFuncionarios] = useState([]);

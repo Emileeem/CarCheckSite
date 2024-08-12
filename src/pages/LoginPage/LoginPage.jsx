@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from "./style.module.scss";
 import logo from "../../../public/logo.png"
 import hexa from "../../../public/hexagono.png"
@@ -18,14 +18,11 @@ export default function LoginPage() {
                 edv,
                 password
             });
-            if (response.status === 200) {
-                console.log(response.data);
-                navigate('/home');
-            } else {
-                console.error("Erro ao fazer login:", response.data.message);
-                toast.error("Erro ao fazer login: " + response.data.message);
-            }
+            localStorage.setItem("auth", response.data.auth)
+            localStorage.setItem("token", response.data.token)
+            navigate('/home');
         } catch (error) {
+            localStorage.clear();
             console.error("Erro ao fazer login:", error);
             toast.error("Credenciais erradas!");
         }

@@ -1,15 +1,12 @@
-// import { Secret, decode, verify } from 'jsonwebtoken'
-// import dotenv from 'dotenv-safe';
-import process from 'process';
+import { isExpired, decodeToken } from "react-jwt";
 
-// dotenv.config();
+export default function verifyJWT()
+{
+    const token = localStorage.getItem("token");
+    console.log(token)
+    const myDecodedToken = decodeToken(token);
+    const isMyTokenExpired = isExpired(token);
 
-export default function verifyJWT(req){
-    // const token = req.headers['authorization'];
-    // if (!token) return false
-    
-    // jwt.verify(token, process.env.SECRET, function(err) {
-    //   if (err) return false
-    //   return true
-    // });
+    console.log(myDecodedToken)
+    console.log(isMyTokenExpired)
 }

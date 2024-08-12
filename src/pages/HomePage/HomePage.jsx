@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from './style.module.scss';
 import Funcionarios from "../../components/FuncionariosComponent/Funcionarios";
 import Carros from '../../components/CarrosComponent/Carros';
+import verifyJWT from '../../helpers/VerifyJWT.jsx'
+import { useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
     const [isVisualizarModalOpen, setIsVisualizarModalOpen] = useState(false);
@@ -9,6 +11,16 @@ export default function HomePage() {
     const [isDeletarModalOpen, setIsDeletarModalOpen] = useState(false);
     const [isNovaPlacaModalOpen, setIsNovaPlacaModalOpen] = useState(false);
     const [isNovoLoginModalOpen, setIsNovoLoginModalOpen] = useState(false);
+    const navigate = useNavigate(); 
+
+    useEffect(() => {
+        if(!localStorage.getItem("token"))
+        {
+            localStorage.removeItem("auth");
+            localStorage.removeItem("token");
+            navigate("/");
+        }
+    }, []);
 
     const openVisualizarModal = () => setIsVisualizarModalOpen(true);
     const closeVisualizarModal = () => setIsVisualizarModalOpen(false);
@@ -31,7 +43,7 @@ export default function HomePage() {
                 <h3> Home </h3>
                 <h3 onClick={openNovaPlacaModal}> Nova Placa </h3>
                 <h3 onClick={openNovoLoginModal}> Novo Login </h3>
-                <input type='text' placeholder='Buscar Colaborador...' className={styles.busca} onSubmit={console.log("AAAAAAAAAAAAAAAAAAAAAAA")}/>
+                <input type='text' placeholder='Buscar Colaborador...' className={styles.busca}/>
             </nav>
 
             <section className={styles.corpo}>
@@ -78,7 +90,7 @@ export default function HomePage() {
                         <h2>Confirmação de Deleção</h2>
                         <p>Você tem certeza que deseja deletar este carro?</p>
                         <button onClick={closeDeletarModal} className={styles.closeButton}>Cancelar</button>
-                        <button className={styles.confirmButton}>Confirmar</button>
+                        <button onClick={verifyJWT} className={styles.confirmButton}>Confirmar</button>
                     </div>
                 </div>
             )}
