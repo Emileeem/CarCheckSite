@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './style.module.scss';
 import Funcionarios from "../../components/FuncionariosComponent/Funcionarios";
 import Carros from '../../components/CarrosComponent/Carros';
@@ -14,6 +14,8 @@ export default function HomePage() {
     const navigate = useNavigate(); 
 
     useEffect(() => {
+        let teste = verifyJWT()
+        console.log(teste)
         if(!localStorage.getItem("token"))
         {
             localStorage.removeItem("auth");

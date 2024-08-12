@@ -9,4 +9,6 @@ export default function verifyJWT()
 
     console.log(myDecodedToken)
     console.log(isMyTokenExpired)
+
+    return myDecodedToken
 }
