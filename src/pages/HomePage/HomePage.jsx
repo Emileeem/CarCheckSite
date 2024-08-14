@@ -4,6 +4,7 @@ import Funcionarios from "../../components/FuncionariosComponent/Funcionarios";
 import Carros from '../../components/CarrosComponent/Carros';
 import verifyJWT from '../../helpers/VerifyJWT.jsx'
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function HomePage() {
     const [isVisualizarModalOpen, setIsVisualizarModalOpen] = useState(false);
@@ -11,12 +12,12 @@ export default function HomePage() {
     const [isDeletarModalOpen, setIsDeletarModalOpen] = useState(false);
     const [isNovaPlacaModalOpen, setIsNovaPlacaModalOpen] = useState(false);
     const [isNovoLoginModalOpen, setIsNovoLoginModalOpen] = useState(false);
+    const [userSearch, setUserSearch] = useState({});
     const navigate = useNavigate(); 
 
     useEffect(() => {
         let teste = verifyJWT()
-        console.log(teste)
-        if(!localStorage.getItem("token"))
+        if(!localStorage.getItem("token") || !teste.adm)
         {
             localStorage.removeItem("auth");
             localStorage.removeItem("token");
@@ -39,13 +40,40 @@ export default function HomePage() {
     const openNovoLoginModal = () => setIsNovoLoginModalOpen(true);
     const closeNovoLoginModal = () => setIsNovoLoginModalOpen(false);
 
+    const handleGetUsers = async () => {
+        const cep = userSearch;
+        if (userSearch.length === 8) {
+            try {
+                const response = await axios.post('http://localhost:3000/api/login/');
+                const data = await response.json();
+                if (data && !data.erro) {
+                    setFormValues(prevValues => ({
+                        ...prevValues,
+                        endereco: {
+                            ...prevValues.endereco,
+                            cidade: data.localidade,
+                            bairro: data.bairro,
+                            rua: data.logradouro,
+                            uf: data.uf,
+                            complemento: data.complemento || ""
+                        }
+                    }));
+                } else {
+                    console.error('Erro ao buscar CEP:', data);
+                }
+            } catch (error) {
+                console.error('Erro ao buscar CEP:', error);
+            }
+        }
+    };
+
     return (
         <div className={styles.principal}>
             <nav className={styles.nav}>
                 <h3> Home </h3>
                 <h3 onClick={openNovaPlacaModal}> Nova Placa </h3>
                 <h3 onClick={openNovoLoginModal}> Novo Login </h3>
-                <input type='text' placeholder='Buscar Colaborador...' className={styles.busca}/>
+                <input type='text' placeholder='Buscar Colaborador...' className={styles.busca} value={userSearch} />
             </nav>
 
             <section className={styles.corpo}>
