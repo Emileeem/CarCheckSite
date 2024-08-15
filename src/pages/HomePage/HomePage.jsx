@@ -12,7 +12,8 @@ export default function HomePage() {
     const [isDeletarModalOpen, setIsDeletarModalOpen] = useState(false);
     const [isNovaPlacaModalOpen, setIsNovaPlacaModalOpen] = useState(false);
     const [isNovoLoginModalOpen, setIsNovoLoginModalOpen] = useState(false);
-    const [userSearch, setUserSearch] = useState({});
+    const [userLog, setUserLog] = useState([]);
+    const [route, setRoute] = useState(false)
     const navigate = useNavigate(); 
 
     useEffect(() => {
@@ -40,32 +41,32 @@ export default function HomePage() {
     const openNovoLoginModal = () => setIsNovoLoginModalOpen(true);
     const closeNovoLoginModal = () => setIsNovoLoginModalOpen(false);
 
-    const handleGetUsers = async () => {
-        const cep = userSearch;
-        if (userSearch.length === 8) {
-            try {
-                const response = await axios.post('http://localhost:3000/api/login/');
-                const data = await response.json();
-                if (data && !data.erro) {
-                    setFormValues(prevValues => ({
-                        ...prevValues,
-                        endereco: {
-                            ...prevValues.endereco,
-                            cidade: data.localidade,
-                            bairro: data.bairro,
-                            rua: data.logradouro,
-                            uf: data.uf,
-                            complemento: data.complemento || ""
-                        }
-                    }));
-                } else {
-                    console.error('Erro ao buscar CEP:', data);
+    async function handleGetUsers(params) {
+        params = params.replace("-", "")
+        if(route) {
+            if(params.length === 8) {
+                try {
+                    const response = await axios.get(`http://localhost:3000/api/funcionario/${params}`);
+                    console.log(response.data.ID);
+                    try {
+                        const responseLogs = await axios.get(`http://localhost:3000/api/carro/funcId/${response.data.ID}`)
+                        console.log(responseLogs)
+                        setUserLog(responseLogs.data)
+                    } catch (error) {
+                        console.error('Erro ao buscar carros', error);
+                    }
                 }
-            } catch (error) {
-                console.error('Erro ao buscar CEP:', error);
+                catch (error) {
+                    console.error('Erro ao buscar funcionario', error);
+                }
             }
         }
-    };
+        // else {
+        //     if(params.length === 7){
+
+        //     }
+        // }
+    }
 
     return (
         <div className={styles.principal}>
@@ -73,7 +74,8 @@ export default function HomePage() {
                 <h3> Home </h3>
                 <h3 onClick={openNovaPlacaModal}> Nova Placa </h3>
                 <h3 onClick={openNovoLoginModal}> Novo Login </h3>
-                <input type='text' placeholder='Buscar Colaborador...' className={styles.busca} value={userSearch} />
+                <button style={{borderRadius: "50%", width: "50px"}} onClick={() => {setRoute(prev => !prev); console.log(route)}}/>
+                <input type='text' placeholder={route?"Buscar colaborador":"Buscar placa"} className={styles.busca} onChange={(e) => handleGetUsers(e.target.value)}/>
             </nav>
 
             <section className={styles.corpo}>
