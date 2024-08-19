@@ -61,11 +61,18 @@ export default function HomePage() {
                 }
             }
         }
-        // else {
-        //     if(params.length === 7){
-
-        //     }
-        // }
+        else {
+            if(params.length === 7){
+                console.log("A")
+                try {
+                    const response = await axios.get(`http://localhost:3000/api/carro/placa/${params}`);
+                    console.log(response)
+                    setUserLog(response.data)
+                } catch (error) {
+                    console.error("Erro ao buscar carros", error)
+                }
+            }
+        }
     }
 
     return (
