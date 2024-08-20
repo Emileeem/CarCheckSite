@@ -86,21 +86,28 @@ export default function HomePage() {
             </nav>
 
             <section className={styles.corpo}>
-                <div className={styles.dados}>
-                    Colaborador - EDV  
-                    <div className={styles.botoes}>
-                        <button className={styles.entrada} onClick={openVisualizarModal}>
-                            Visualizar Entrada/Saída
-                        </button>
-                        <button className={styles.atualizar} onClick={openAtualizarModal}>
-                            Atualizar Dados
-                        </button>
-                        <button className={styles.deletar} onClick={openDeletarModal}>
-                            Deletar <br/> Carro
-                        </button>
-                    </div>
-                </div>
-                <hr/>
+                <details>
+                    <summary>
+                        <div className={styles.dados}>
+                            Colaborador - EDV  
+                            <div className={styles.botoes}>
+                                <button className={styles.entrada} onClick={openVisualizarModal}>
+                                    Visualizar Entrada/Saída
+                                </button>
+                                <button className={styles.atualizar} onClick={openAtualizarModal}>
+                                    Atualizar Dados
+                                </button>
+                                <button className={styles.deletar} onClick={openDeletarModal}>
+                                    Deletar <br/> Carro
+                                </button>
+                            </div>
+                        </div>
+                        <hr/>
+                    </summary>
+                    <p>
+                        teste
+                    </p>
+                </details>
             </section>
 
             {isVisualizarModalOpen && (

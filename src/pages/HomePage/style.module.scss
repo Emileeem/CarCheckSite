@@ -160,3 +160,7 @@ hr {
     background-color: #4caf50;
     color: white;
 }   
+
+details > summary::-webkit-details-marker {
+    display: flex;
+}
