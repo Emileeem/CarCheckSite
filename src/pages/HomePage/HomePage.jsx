@@ -12,8 +12,9 @@ export default function HomePage() {
     const [isDeletarModalOpen, setIsDeletarModalOpen] = useState(false);
     const [isNovaPlacaModalOpen, setIsNovaPlacaModalOpen] = useState(false);
     const [isNovoLoginModalOpen, setIsNovoLoginModalOpen] = useState(false);
-    const [userLog, setUserLog] = useState([]);
     const [route, setRoute] = useState(false)
+    const [cars, setCars] = useState([]);
+    const [func, setFunc] = useState({})
     const navigate = useNavigate(); 
 
     useEffect(() => {
@@ -48,10 +49,11 @@ export default function HomePage() {
                 try {
                     const response = await axios.get(`http://localhost:3000/api/funcionario/${params}`);
                     console.log(response.data.ID);
+                    setFunc(response.data)
                     try {
                         const responseLogs = await axios.get(`http://localhost:3000/api/carro/funcId/${response.data.ID}`)
                         console.log(responseLogs)
-                        setUserLog(responseLogs.data)
+                        setCars(responseLogs.data)
                     } catch (error) {
                         console.error('Erro ao buscar carros', error);
                     }
@@ -67,7 +69,10 @@ export default function HomePage() {
                 try {
                     const response = await axios.get(`http://localhost:3000/api/carro/placa/${params}`);
                     console.log(response)
-                    setUserLog(response.data)
+                    setCars(response.data)
+                    const response2 = await axios.get(`http://localhost:3000/api/funcionario/${params}`);
+                    console.log(response2.data.ID);
+                    setFunc(response2.data)
                 } catch (error) {
                     console.error("Erro ao buscar carros", error)
                 }
@@ -86,28 +91,30 @@ export default function HomePage() {
             </nav>
 
             <section className={styles.corpo}>
-                <details>
-                    <summary>
-                        <div className={styles.dados}>
-                            Colaborador - EDV  
-                            <div className={styles.botoes}>
-                                <button className={styles.entrada} onClick={openVisualizarModal}>
-                                    Visualizar Entrada/Saída
-                                </button>
-                                <button className={styles.atualizar} onClick={openAtualizarModal}>
-                                    Atualizar Dados
-                                </button>
-                                <button className={styles.deletar} onClick={openDeletarModal}>
-                                    Deletar <br/> Carro
-                                </button>
+                {cars.map((item, index) => (
+                    <details key={index}>
+                        <summary>
+                            <div className={styles.dados}>
+                                {func.Nome}  
+                                <div className={styles.botoes}>
+                                    <button className={styles.entrada} onClick={openVisualizarModal}>
+                                        Visualizar Entrada/Saída
+                                    </button>
+                                    <button className={styles.atualizar} onClick={openAtualizarModal}>
+                                        Atualizar Dados
+                                    </button>
+                                    <button className={styles.deletar} onClick={openDeletarModal}>
+                                        Deletar <br/> Carro
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <hr/>
-                    </summary>
-                    <p>
-                        teste
-                    </p>
-                </details>
+                            <hr/>
+                        </summary>
+                        <p>
+                            teste
+                        </p>
+                    </details>
+                ))}
             </section>
 
             {isVisualizarModalOpen && (
