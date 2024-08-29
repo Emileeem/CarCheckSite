@@ -13,7 +13,9 @@ export default function HomePage() {
     const [isNovaPlacaModalOpen, setIsNovaPlacaModalOpen] = useState(false);
     const [isNovoLoginModalOpen, setIsNovoLoginModalOpen] = useState(false);
     const [route, setRoute] = useState(false)
+    const [openDetail, setOpenDetail] = useState(1)
     const [cars, setCars] = useState([]);
+    const [logs, setLogs] = useState("")
     const [func, setFunc] = useState({})
     const navigate = useNavigate(); 
 
@@ -48,12 +50,11 @@ export default function HomePage() {
             if(params.length === 8) {
                 try {
                     const response = await axios.get(`http://localhost:3000/api/funcionario/${params}`);
-                    console.log(response.data.ID);
                     setFunc(response.data)
                     try {
-                        const responseLogs = await axios.get(`http://localhost:3000/api/carro/funcId/${response.data.ID}`)
-                        console.log(responseLogs)
-                        setCars(responseLogs.data)
+                        const responseCars = await axios.get(`http://localhost:3000/api/carro/funcId/${response.data.ID}`)
+                        console.log(responseCars.data)
+                        setCars(responseCars.data)
                     } catch (error) {
                         console.error('Erro ao buscar carros', error);
                     }
@@ -67,11 +68,11 @@ export default function HomePage() {
             if(params.length === 7){
                 console.log("A")
                 try {
+                    let provArray = []
                     const response = await axios.get(`http://localhost:3000/api/carro/placa/${params}`);
-                    console.log(response)
-                    setCars(response.data)
-                    const response2 = await axios.get(`http://localhost:3000/api/funcionario/${params}`);
-                    console.log(response2.data.ID);
+                    provArray.push(response.data)
+                    setCars(provArray)
+                    const response2 = await axios.get(`http://localhost:3000/api/funcionario/id/${response.data.FuncionarioID}`);
                     setFunc(response2.data)
                 } catch (error) {
                     console.error("Erro ao buscar carros", error)
@@ -92,10 +93,10 @@ export default function HomePage() {
 
             <section className={styles.corpo}>
                 {cars.map((item, index) => (
-                    <details key={index}>
+                    <details onClick={() => {setOpenDetail(index);}} key={index} open={() => openDetail === index}>
                         <summary>
                             <div className={styles.dados}>
-                                {func.Nome}  
+                                {func.Nome} - {item.Placa}
                                 <div className={styles.botoes}>
                                     <button className={styles.entrada} onClick={openVisualizarModal}>
                                         Visualizar Entrada/Saída
@@ -110,9 +111,7 @@ export default function HomePage() {
                             </div>
                             <hr/>
                         </summary>
-                        <p>
-                            teste
-                        </p>
+                        <p>Teste</p>
                     </details>
                 ))}
             </section>
