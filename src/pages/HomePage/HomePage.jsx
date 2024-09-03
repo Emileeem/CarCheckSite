@@ -15,7 +15,7 @@ export default function HomePage() {
     const [route, setRoute] = useState(false)
     const [openDetail, setOpenDetail] = useState(1)
     const [cars, setCars] = useState([]);
-    const [logs, setLogs] = useState("")
+    const [logs, setLogs] = useState([])
     const [func, setFunc] = useState({})
     const navigate = useNavigate(); 
 
@@ -27,7 +27,7 @@ export default function HomePage() {
             localStorage.removeItem("token");
             navigate("/");
         }
-    }, []);
+    }, [navigate]);
 
     const openVisualizarModal = () => setIsVisualizarModalOpen(true);
     const closeVisualizarModal = () => setIsVisualizarModalOpen(false);
@@ -81,6 +81,17 @@ export default function HomePage() {
         }
     }
 
+    async function handleGetLogs(id){
+        console.log(id, "batata")
+        try {
+            const response = await axios.get(`http://localhost:3000/api/log/${id}`);
+            console.log(response)
+            setLogs(response.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <div className={styles.principal}>
             <nav className={styles.nav}>
@@ -92,8 +103,8 @@ export default function HomePage() {
             </nav>
 
             <section className={styles.corpo}>
-                {cars.map((item, index) => (
-                    <details onClick={() => {setOpenDetail(index);}} key={index} open={() => openDetail === index}>
+                {cars && cars.map((item, index) => (
+                    <details onClick={() => setOpenDetail(index)} key={index} open={() => openDetail === index} onMouseDown={() => handleGetLogs(item.ID)}>
                         <summary>
                             <div className={styles.dados}>
                                 {func.Nome} - {item.Placa}
@@ -111,7 +122,11 @@ export default function HomePage() {
                             </div>
                             <hr/>
                         </summary>
-                        <p>Teste</p>
+                        {logs && logs.map((item, index) => {
+                            return(
+                                <p key={index}>{item.DiaEntrada}</p>
+                            )
+                        })}
                     </details>
                 ))}
             </section>
