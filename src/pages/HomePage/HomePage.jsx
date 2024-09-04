@@ -4,7 +4,7 @@ import Funcionarios from "../../components/FuncionariosComponent/Funcionarios";
 import Carros from '../../components/CarrosComponent/Carros';
 import verifyJWT from '../../helpers/VerifyJWT.jsx'
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { api } from "../../services/api.jsx"
 
 export default function HomePage() {
     const [isVisualizarModalOpen, setIsVisualizarModalOpen] = useState(false);
@@ -49,10 +49,10 @@ export default function HomePage() {
         if(route) {
             if(params.length === 8) {
                 try {
-                    const response = await axios.get(`http://localhost:3000/api/funcionario/${params}`);
+                    const response = await api.get(`/api/funcionario/${params}`);
                     setFunc(response.data)
                     try {
-                        const responseCars = await axios.get(`http://localhost:3000/api/carro/funcId/${response.data.ID}`)
+                        const responseCars = await api.get(`/api/carro/funcId/${response.data.ID}`)
                         console.log(responseCars.data)
                         setCars(responseCars.data)
                     } catch (error) {
@@ -69,10 +69,10 @@ export default function HomePage() {
                 console.log("A")
                 try {
                     let provArray = []
-                    const response = await axios.get(`http://localhost:3000/api/carro/placa/${params}`);
+                    const response = await api.get(`/api/carro/placa/${params}`);
                     provArray.push(response.data)
                     setCars(provArray)
-                    const response2 = await axios.get(`http://localhost:3000/api/funcionario/id/${response.data.FuncionarioID}`);
+                    const response2 = await api.get(`/api/funcionario/id/${response.data.FuncionarioID}`);
                     setFunc(response2.data)
                 } catch (error) {
                     console.error("Erro ao buscar carros", error)
@@ -82,10 +82,8 @@ export default function HomePage() {
     }
 
     async function handleGetLogs(id){
-        console.log(id, "batata")
         try {
-            const response = await axios.get(`http://localhost:3000/api/log/${id}`);
-            console.log(response)
+            const response = await api.get(`/api/log/${id}`);
             setLogs(response.data)
         } catch (error) {
             console.log(error)
