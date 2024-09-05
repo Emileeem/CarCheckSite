@@ -14,6 +14,7 @@ export default function Carros() {
         ano: "",
         edv: ""
     });
+    // const [caviar, setCaviar] = useState(false)
 
     useEffect(() => {
         fetchCarros();
@@ -123,6 +124,7 @@ export default function Carros() {
                     edv: "",
                 });
                 console.log(result);
+                window.location.reload();
             } else {
                 const errorData = await response.json();
                 toast.error(`Erro ao cadastrar carro: ${errorData.message || 'Erro desconhecido'}`);

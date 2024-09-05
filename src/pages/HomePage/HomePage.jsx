@@ -8,16 +8,19 @@ import { api } from "../../services/api.jsx"
 
 export default function HomePage() {
     const [isVisualizarModalOpen, setIsVisualizarModalOpen] = useState(false);
+    const [currVisualizar, setCurrVisualizar] = useState(0)
     const [isAtualizarModalOpen, setIsAtualizarModalOpen] = useState(false);
+    const [currAtualizar, setCurrAtualizar] = useState(0)
     const [isDeletarModalOpen, setIsDeletarModalOpen] = useState(false);
+    const [currDeletar, setCurrDeletar] = useState(0)
     const [isNovaPlacaModalOpen, setIsNovaPlacaModalOpen] = useState(false);
     const [isNovoLoginModalOpen, setIsNovoLoginModalOpen] = useState(false);
     const [route, setRoute] = useState(false)
     const [openDetail, setOpenDetail] = useState(1)
     const [cars, setCars] = useState([]);
-    const [logs, setLogs] = useState([])
-    const [func, setFunc] = useState({})
-    const navigate = useNavigate(); 
+    const [logs, setLogs] = useState([]);
+    const [func, setFunc] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
         let teste = verifyJWT()
@@ -29,13 +32,25 @@ export default function HomePage() {
         }
     }, [navigate]);
 
-    const openVisualizarModal = () => setIsVisualizarModalOpen(true);
+    function openVisualizarModal(id){
+        setIsVisualizarModalOpen(true);
+        setCurrVisualizar(id)
+        console.log(id)
+    } 
     const closeVisualizarModal = () => setIsVisualizarModalOpen(false);
 
-    const openAtualizarModal = () => setIsAtualizarModalOpen(true);
+    function openAtualizarModal(id){
+        setIsAtualizarModalOpen(true);
+        setCurrAtualizar(id)
+        console.log(id)
+    } 
     const closeAtualizarModal = () => setIsAtualizarModalOpen(false);
 
-    const openDeletarModal = () => setIsDeletarModalOpen(true);
+    function openDeletarModal(id){
+        setIsDeletarModalOpen(true);
+        setCurrDeletar(id)
+        console.log(id)
+    } 
     const closeDeletarModal = () => setIsDeletarModalOpen(false);
 
     const openNovaPlacaModal = () => setIsNovaPlacaModalOpen(true);
@@ -45,7 +60,7 @@ export default function HomePage() {
     const closeNovoLoginModal = () => setIsNovoLoginModalOpen(false);
 
     async function handleGetUsers(params) {
-        params = params.replace("-", "")
+        params = params.replace("-", "");
         if(route) {
             if(params.length === 8) {
                 try {
@@ -90,6 +105,20 @@ export default function HomePage() {
         }
     }
 
+    async function handleDeletarCarro(){
+        try {
+            await api.delete(`/api/carro/${currDeletar}`)
+            setIsDeletarModalOpen(false);
+            let aux = cars.filter(function( obj ) {
+                return obj.ID !== currDeletar
+            });
+            console.log(aux, "DDDDDDDDDDDDDDDDDDDDDDDD")
+            setCars(aux);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <div className={styles.principal}>
             <nav className={styles.nav}>
@@ -107,13 +136,13 @@ export default function HomePage() {
                             <div className={styles.dados}>
                                 {func.Nome} - {item.Placa}
                                 <div className={styles.botoes}>
-                                    <button className={styles.entrada} onClick={openVisualizarModal}>
+                                    <button className={styles.entrada} onClick={() => openVisualizarModal(item.ID)}>
                                         Visualizar Entrada/Saída
                                     </button>
                                     <button className={styles.atualizar} onClick={openAtualizarModal}>
                                         Atualizar Dados
                                     </button>
-                                    <button className={styles.deletar} onClick={openDeletarModal}>
+                                    <button className={styles.deletar} onClick={() => openDeletarModal(item.ID)}>
                                         Deletar <br/> Carro
                                     </button>
                                 </div>
@@ -155,7 +184,7 @@ export default function HomePage() {
                         <h2>Confirmação de Deleção</h2>
                         <p>Você tem certeza que deseja deletar este carro?</p>
                         <button onClick={closeDeletarModal} className={styles.closeButton}>Cancelar</button>
-                        <button onClick={verifyJWT} className={styles.confirmButton}>Confirmar</button>
+                        <button onClick={() => handleDeletarCarro()} className={styles.confirmButton}>Confirmar</button>
                     </div>
                 </div>
             )}
@@ -164,7 +193,7 @@ export default function HomePage() {
                 <div className={styles.modalOverlay} onClick={closeNovaPlacaModal}>
                     <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
                         <h2>Nova Placa</h2>
-                        <Carros/>
+                        <Carros />
                         <button onClick={closeNovaPlacaModal} className={styles.closeButton}>Fechar</button>
                     </div>
                 </div>
