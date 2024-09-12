@@ -23,14 +23,39 @@ export default function HomePage() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        let teste = verifyJWT()
-        if(!localStorage.getItem("token") || !teste.adm)
-        {
-            localStorage.removeItem("auth");
-            localStorage.removeItem("token");
-            navigate("/");
-        }
-    }, [navigate]);
+        // Verificação do JWT e redirecionamento
+        const verificarJWT = () => {
+            try {
+                let teste = verifyJWT();
+                if (!localStorage.getItem("token") || !teste.adm) {
+                    localStorage.removeItem("auth");
+                    localStorage.removeItem("token");
+                    navigate("/");
+                }
+            } catch (error) {
+                console.error('Erro ao verificar JWT:', error);
+                navigate("/");
+            }
+        };
+    
+        verificarJWT();
+    
+        // Busca dos logs
+        const fetchLogs = async () => {
+            if (openDetail) {
+                try {
+                    const response = await api.get(`/api/log/${openDetail}`);
+                    setLogs(response.data);
+                } catch (error) {
+                    console.error('Erro ao buscar logs:', error);
+                }
+            }
+        };
+    
+        fetchLogs();
+        
+    }, [navigate, openDetail]); // Remova logs da lista de dependências
+    
 
     function openVisualizarModal(id){
         setIsVisualizarModalOpen(true);
@@ -61,47 +86,44 @@ export default function HomePage() {
 
     async function handleGetUsers(params) {
         params = params.replace("-", "");
-        if(route) {
-            if(params.length === 8) {
-                try {
-                    const response = await api.get(`/api/funcionario/${params}`);
-                    setFunc(response.data)
+        if(params){
+            if(route) {
+                if(params.length === 8) {
                     try {
-                        const responseCars = await api.get(`/api/carro/funcId/${response.data.ID}`)
-                        console.log(responseCars.data)
-                        setCars(responseCars.data)
-                    } catch (error) {
-                        console.error('Erro ao buscar carros', error);
+                        const response = await api.get(`/api/funcionario/${params}`);
+                        setFunc(response.data)
+                        try {
+                            const responseCars = await api.get(`/api/carro/funcId/${response.data.ID}`)
+                            console.log(responseCars.data)
+                            setCars(responseCars.data)
+                            localStorage.setItem("currSearch", response.data)
+                        } catch (error) {
+                            console.error('Erro ao buscar carros', error);
+                        }
+                    }
+                    catch (error) {
+                        console.error('Erro ao buscar funcionario', error);
                     }
                 }
-                catch (error) {
-                    console.error('Erro ao buscar funcionario', error);
+            }
+            else {
+                if(params.length === 7){
+                    console.log("A")
+                    try {
+                        let provArray = []
+                        const response = await api.get(`/api/carro/placa/${params}`);
+                        provArray.push(response.data)
+                        setCars(provArray)
+                        const response2 = await api.get(`/api/funcionario/id/${response.data.FuncionarioID}`);
+                        setFunc(response2.data)
+                    } catch (error) {
+                        console.error("Erro ao buscar carros", error)
+                    }
                 }
             }
         }
-        else {
-            if(params.length === 7){
-                console.log("A")
-                try {
-                    let provArray = []
-                    const response = await api.get(`/api/carro/placa/${params}`);
-                    provArray.push(response.data)
-                    setCars(provArray)
-                    const response2 = await api.get(`/api/funcionario/id/${response.data.FuncionarioID}`);
-                    setFunc(response2.data)
-                } catch (error) {
-                    console.error("Erro ao buscar carros", error)
-                }
-            }
-        }
-    }
-
-    async function handleGetLogs(id){
-        try {
-            const response = await api.get(`/api/log/${id}`);
-            setLogs(response.data)
-        } catch (error) {
-            console.log(error)
+        else{
+            setFunc(localStorage.getItem("currSearch"))
         }
     }
 
@@ -131,7 +153,7 @@ export default function HomePage() {
 
             <section className={styles.corpo}>
                 {cars && cars.map((item, index) => (
-                    <details onClick={() => setOpenDetail(index)} key={index} open={() => openDetail === index} onMouseDown={() => handleGetLogs(item.ID)}>
+                    <details onClick={() => setOpenDetail(item.ID)} key={index} open={() => openDetail === index}>
                         <summary>
                             <div className={styles.dados}>
                                 {func.Nome} - {item.Placa}
