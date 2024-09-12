@@ -2,11 +2,14 @@ import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from "./style.module.scss";
+import axios from 'axios';
 
-export default function Carros() {
+export default function Carros(props) {
     const [carros, setCarros] = useState([]);
     const [funcionarios, setFuncionarios] = useState([]);
     const [filteredFuncionarios, setFilteredFuncionarios] = useState([]);
+    const [updateCar, setUpdateCar] = useState({})
+    const [flagCar, setFlagCar] = useState(true)
     const [formValues, setFormValues] = useState({
         cor: "",
         placa: "",
@@ -19,7 +22,20 @@ export default function Carros() {
     useEffect(() => {
         fetchCarros();
         fetchFuncionarios();
+        if(props && flagCar){
+            getCar();
+            setFlagCar(false)
+        }
     }, []);
+
+    async function getCar(){
+        try {
+            const response = await axios.get(`http://localhost:3000/api/carro/${props}`);
+            setUpdateCar(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const fetchCarros = async () => {
         try {
@@ -133,6 +149,16 @@ export default function Carros() {
             toast.error('Erro ao cadastrar carro');
         }
     };
+
+    if(props){
+        setFormValues({
+            cor: updateCar.cor,
+            placa: updateCar.placa,
+            modelo: updateCar.modelo,
+            ano: updateCar.ano,
+            edv: updateCar.edv
+        })
+    }
 
     return (
         <div className={styles.carros}>

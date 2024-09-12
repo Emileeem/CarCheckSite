@@ -147,8 +147,10 @@ export default function HomePage() {
                 <h3> Home </h3>
                 <h3 onClick={openNovaPlacaModal}> Nova Placa </h3>
                 <h3 onClick={openNovoLoginModal}> Novo Login </h3>
-                <button style={{borderRadius: "50%", width: "50px"}} onClick={() => {setRoute(prev => !prev); console.log(route)}}/>
-                <input type='text' placeholder={route?"Buscar colaborador":"Buscar placa"} className={styles.busca} onChange={(e) => handleGetUsers(e.target.value)}/>
+                <div style={{width: "25%", alignItems: "center", display: "flex", justifyContent: "space-between"}}>
+                    <button style={{borderRadius: "50%", width: "20%"}} onClick={() => {setRoute(prev => !prev); console.log(route)}}/>
+                    <input type='text' placeholder={route?"Buscar colaborador":"Buscar placa"} className={styles.busca} onChange={(e) => handleGetUsers(e.target.value)}/>
+                </div>
             </nav>
 
             <section className={styles.corpo}>
@@ -161,7 +163,7 @@ export default function HomePage() {
                                     <button className={styles.entrada} onClick={() => openVisualizarModal(item.ID)}>
                                         Visualizar Entrada/Saída
                                     </button>
-                                    <button className={styles.atualizar} onClick={openAtualizarModal}>
+                                    <button className={styles.atualizar} onClick={() => openNovaPlacaModal(item.ID)}>
                                         Atualizar Dados
                                     </button>
                                     <button className={styles.deletar} onClick={() => openDeletarModal(item.ID)}>
