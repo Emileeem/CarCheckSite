@@ -8,8 +8,7 @@ export default function Carros(props) {
     const [carros, setCarros] = useState([]);
     const [funcionarios, setFuncionarios] = useState([]);
     const [filteredFuncionarios, setFilteredFuncionarios] = useState([]);
-    const [updateCar, setUpdateCar] = useState({})
-    const [flagCar, setFlagCar] = useState(true)
+    const [updateFlag, setUpdateFlag] = useState(true)
     const [formValues, setFormValues] = useState({
         cor: "",
         placa: "",
@@ -22,16 +21,25 @@ export default function Carros(props) {
     useEffect(() => {
         fetchCarros();
         fetchFuncionarios();
-        if(props && flagCar){
+        console.log(props.id)
+        if(props && updateFlag){
             getCar();
-            setFlagCar(false)
+            setUpdateFlag(false)
         }
     }, []);
 
     async function getCar(){
         try {
-            const response = await axios.get(`http://localhost:3000/api/carro/${props}`);
-            setUpdateCar(response.data);
+            const response = await axios.get(`http://localhost:3000/api/carro/${props.id}`);
+            console.log(response, "AAAAAAAAAAAAAAAAAAAAAAA")
+            const response2 = await axios.get()
+            setFormValues({
+                cor: response.data.Cor,
+                placa: response.data.Placa,
+                modelo: response.data.Modelo,
+                ano: response.data.Ano,
+                edv: response.data.edv
+            })
         } catch (error) {
             console.log(error);
         }
@@ -149,16 +157,6 @@ export default function Carros(props) {
             toast.error('Erro ao cadastrar carro');
         }
     };
-
-    if(props){
-        setFormValues({
-            cor: updateCar.cor,
-            placa: updateCar.placa,
-            modelo: updateCar.modelo,
-            ano: updateCar.ano,
-            edv: updateCar.edv
-        })
-    }
 
     return (
         <div className={styles.carros}>

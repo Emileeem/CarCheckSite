@@ -163,7 +163,7 @@ export default function HomePage() {
                                     <button className={styles.entrada} onClick={() => openVisualizarModal(item.ID)}>
                                         Visualizar Entrada/Saída
                                     </button>
-                                    <button className={styles.atualizar} onClick={() => openNovaPlacaModal(item.ID)}>
+                                    <button className={styles.atualizar} onClick={() => openAtualizarModal(item.ID)}>
                                         Atualizar Dados
                                     </button>
                                     <button className={styles.deletar} onClick={() => openDeletarModal(item.ID)}>
@@ -196,7 +196,7 @@ export default function HomePage() {
                 <div className={styles.modalOverlay} onClick={closeAtualizarModal}>
                     <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
                         <h2>Atualizar Dados</h2>
-                        <p>Formulário para atualizar dados do colaborador...</p>
+                        <Carros id={currAtualizar}/>
                         <button onClick={closeAtualizarModal} className={styles.closeButton}>Fechar</button>
                     </div>
                 </div>
