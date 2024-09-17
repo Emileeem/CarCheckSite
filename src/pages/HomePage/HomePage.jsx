@@ -174,7 +174,10 @@ export default function HomePage() {
                         </summary>
                         {logs && logs.map((item, index) => {
                             return(
-                                <p key={index}>{item.DiaEntrada}</p>
+                                <div key={index} className={styles.logs}>
+                                    Entrada - {item.DiaEntrada} {item.HoraEntrada} / Saída - {item.DiaSaida} {item.HoraSaida}
+                                    <hr/>
+                                </div>
                             )
                         })}
                     </details>
