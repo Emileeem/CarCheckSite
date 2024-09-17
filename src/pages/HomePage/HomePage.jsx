@@ -171,7 +171,6 @@ export default function HomePage() {
                                     </button>
                                 </div>
                             </div>
-                            <hr/>
                         </summary>
                         {logs && logs.map((item, index) => {
                             return(

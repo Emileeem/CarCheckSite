@@ -111,6 +111,7 @@ button {
 .dados {
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 hr {
@@ -161,6 +162,20 @@ hr {
     color: white;
 }   
 
-details > summary::-webkit-details-marker {
+summary {
     display: flex;
+    align-items: center;
+    padding-left: 2em;
+  }
+  
+summary::before {
+    content: '▶';
+    margin-right: 0.5em;
+    font-size: 1.2em;
+}
+
+details[open] summary::before {
+    content: '▼';
+    margin-right: 0.5em;
+    font-size: 1.2em;
 }

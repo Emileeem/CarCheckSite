@@ -3,12 +3,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from "./style.module.scss";
 import axios from 'axios';
+import { api } from '../../services/api';
 
 export default function Carros(props) {
     const [carros, setCarros] = useState([]);
     const [funcionarios, setFuncionarios] = useState([]);
     const [filteredFuncionarios, setFilteredFuncionarios] = useState([]);
-    const [updateFlag, setUpdateFlag] = useState(true)
+    const [updateGet, setUpdateGet] = useState(true)
+    const [updatePut, setUpdatePut] = useState(false)
     const [formValues, setFormValues] = useState({
         cor: "",
         placa: "",
@@ -16,29 +18,28 @@ export default function Carros(props) {
         ano: "",
         edv: ""
     });
-    // const [caviar, setCaviar] = useState(false)
 
     useEffect(() => {
         fetchCarros();
         fetchFuncionarios();
-        console.log(props.id)
-        if(props && updateFlag){
+        if(props.id && updateGet){
             getCar();
-            setUpdateFlag(false)
+            setUpdatePut(true);
+            setUpdateGet(false);
         }
     }, []);
 
     async function getCar(){
         try {
-            const response = await axios.get(`http://localhost:3000/api/carro/${props.id}`);
-            console.log(response, "AAAAAAAAAAAAAAAAAAAAAAA")
-            const response2 = await axios.get()
+            const response = await api.get(`/api/carro/${props.id}`);
+            const response2 = await api.get(`/api/funcionario/id/${response.data.FuncionarioID}`)
+            console.log(response, "ZZZZZZZZZZZZZZZZZZZ")
             setFormValues({
                 cor: response.data.Cor,
                 placa: response.data.Placa,
                 modelo: response.data.Modelo,
                 ano: response.data.Ano,
-                edv: response.data.edv
+                edv: response2.data.EDV
             })
         } catch (error) {
             console.log(error);
@@ -122,23 +123,27 @@ export default function Carros(props) {
                 return;
             }
 
-            const response = await fetch('http://localhost:3000/api/carro', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    cor: formValues.cor,
-                    placa: formValues.placa,
-                    modelo: formValues.modelo,
-                    ano: formValues.ano,
-                    edv: formValues.edv,
-                }),
-            });
+            let newCar = {
+                cor: formValues.cor,
+                placa: formValues.placa,
+                modelo: formValues.modelo,
+                ano: formValues.ano,
+                edv: formValues.edv,
+            }
 
-            if (response.ok) {
-                const result = await response.json();
-                toast.success('Carro cadastrado com sucesso!');
+            var response
+            if(!updatePut)
+                response = await api.post('/api/carro', newCar)
+            else
+                response = await api.put(`/api/carro/${props.id}`, newCar)
+
+            console.log(response, "KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
+
+            if (response.status === 200 || response.status === 201) {
+                if(response.status === 200)
+                    toast.success('Carro atualizado com sucesso!');
+                if(response.status === 201)
+                    toast.success('Carro cadastrado com sucesso!');
                 fetchCarros(); 
                 setFormValues({
                     cor: "",
@@ -147,10 +152,9 @@ export default function Carros(props) {
                     ano: "",
                     edv: "",
                 });
-                console.log(result);
             } else {
-                const errorData = await response.json();
-                toast.error(`Erro ao cadastrar carro: ${errorData.message || 'Erro desconhecido'}`);
+                console.log(response, "VVVVVVVVVVVVVVVVVVVVVVVV")
+                toast.error(`Erro ao cadastrar carro: ${response.data || 'Erro desconhecido'}`);
             }
         } catch (error) {
             console.error('Erro ao cadastrar carro:', error);
