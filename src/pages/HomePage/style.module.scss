@@ -62,6 +62,22 @@ h3 {
     font-weight: 400;
 }
 
+.placaEDV{
+    border-radius: 20px;
+    width: 20%;
+    height: 38px;
+    border: 1px solid #B7B7B7;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 2%;
+}
+
+.transfer{
+    width: 30%;
+}
+
 .busca {
     border-radius: 20px;
     width: 80%;
@@ -80,6 +96,7 @@ h3 {
 .botoes {
     display: flex;
     justify-content: space-evenly;
+    width: 30%
 }
 
 button {

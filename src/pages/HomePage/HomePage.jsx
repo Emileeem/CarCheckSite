@@ -5,6 +5,7 @@ import Carros from '../../components/CarrosComponent/Carros';
 import verifyJWT from '../../helpers/VerifyJWT.jsx'
 import { useNavigate } from 'react-router-dom';
 import { api } from "../../services/api.jsx"
+import transfer from "../../../public/transfer.png"
 
 export default function HomePage() {
     const [isVisualizarModalOpen, setIsVisualizarModalOpen] = useState(false);
@@ -148,39 +149,44 @@ export default function HomePage() {
                 <h3 onClick={openNovaPlacaModal}> Nova Placa </h3>
                 <h3 onClick={openNovoLoginModal}> Novo Login </h3>
                 <div style={{width: "25%", alignItems: "center", display: "flex", justifyContent: "space-between"}}>
-                    <button style={{borderRadius: "50%", width: "20%"}} onClick={() => {setRoute(prev => !prev); console.log(route)}}/>
+                    <button className={styles.placaEDV} onClick={() => {setRoute(prev => !prev); console.log(route)}}>
+                        {route ? "Placa" : "EDV"}
+                        <img src={transfer} alt="imagem transfer" className={styles.transfer}/>
+                    </button>
                     <input type='text' placeholder={route?"Buscar colaborador":"Buscar placa"} className={styles.busca} onChange={(e) => handleGetUsers(e.target.value)}/>
                 </div>
             </nav>
 
             <section className={styles.corpo}>
                 {cars && cars.map((item, index) => (
-                    <details onClick={() => setOpenDetail(item.ID)} key={index} open={() => openDetail === index}>
-                        <summary>
-                            <div className={styles.dados}>
-                                {func.Nome} - {item.Placa}
-                                <div className={styles.botoes}>
-                                    <button className={styles.entrada} onClick={() => openVisualizarModal(item.ID)}>
-                                        Visualizar Entrada/Saída
-                                    </button>
-                                    <button className={styles.atualizar} onClick={() => openAtualizarModal(item.ID)}>
-                                        Atualizar Dados
-                                    </button>
-                                    <button className={styles.deletar} onClick={() => openDeletarModal(item.ID)}>
-                                        Deletar <br/> Carro
-                                    </button>
+                    <>
+                        <details onClick={() => setOpenDetail(item.ID)} key={index} open={() => openDetail === index}>
+                            <summary>
+                                <div className={styles.dados}>
+                                    {func.Nome} - {item.Placa}
+                                    <div className={styles.botoes}>
+                                        {/* <button className={styles.entrada} onClick={() => openVisualizarModal(item.ID)}>
+                                            Visualizar Entrada/Saída
+                                        </button> */}
+                                        <button className={styles.atualizar} onClick={() => openAtualizarModal(item.ID)}>
+                                            Atualizar Dados
+                                        </button>
+                                        <button className={styles.deletar} onClick={() => openDeletarModal(item.ID)}>
+                                            Deletar <br/> Carro
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        </summary>
-                        {logs && logs.map((item, index) => {
-                            return(
-                                <div key={index} className={styles.logs}>
-                                    Entrada - {item.DiaEntrada} {item.HoraEntrada} / Saída - {item.DiaSaida} {item.HoraSaida}
-                                    <hr/>
-                                </div>
-                            )
-                        })}
-                    </details>
+                            </summary>
+                            {logs && logs.map((item, index) => {
+                                return(
+                                    <div key={index} className={styles.logs}>
+                                        Entrada - {item.DiaEntrada} {item.HoraEntrada} / Saída - {item.DiaSaida} {item.HoraSaida}
+                                    </div>
+                                )
+                            })}
+                        </details>
+                        <hr/>
+                    </>
                 ))}
             </section>
 
